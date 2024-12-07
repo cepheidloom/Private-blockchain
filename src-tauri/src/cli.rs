@@ -169,7 +169,7 @@ fn cmd_send(from: &str, to: &str, amount: i32, mine_now: bool) -> Result<()> {
     Ok(())
 }
 
-fn cmd_create_wallet() -> Result<String> {
+pub fn cmd_create_wallet() -> Result<String> {
     let mut ws = Wallets::new()?;
     let address = ws.create_wallet();
     ws.save_all()?;
@@ -193,7 +193,7 @@ fn cmd_create_blockchain(address: &str) -> Result<()> {
     Ok(())
 }
 
-fn cmd_get_balance(address: &str) -> Result<i32> {
+pub fn cmd_get_balance(address: &str) -> Result<i32> {
     let pub_key_hash = Address::decode(address).unwrap().body;
     let bc = Blockchain::new()?;
     let utxo_set = UTXOSet { blockchain: bc };

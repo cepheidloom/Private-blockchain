@@ -234,12 +234,13 @@ dependencies = [
 name = "bolk"
 version = "0.1.0"
 dependencies = [
- "anyhow",
+ "base64 0.22.1",
  "bincode",
  "bitcoincash-addr",
  "clap",
  "env_logger",
  "failure",
+ "hex",
  "log",
  "merkle-cbt",
  "rand 0.8.5",

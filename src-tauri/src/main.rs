@@ -12,10 +12,10 @@
 // mod utxoset;
 // mod server;
 
-fn main() /*-> Result<()> */{
+fn main() /* -> Result<()> */ {
     bolk_lib::run()
+
     // let mut cli = Cli::new()?;
     // cli.run()?;
-
     // Ok(())
 }

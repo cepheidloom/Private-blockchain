@@ -16,10 +16,10 @@ const TARGET_HEXS: usize = 4;
 /// Block keeps block headers
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Block {
-    timestamp: u128,
-    transactions: Vec<Transaction>,
-    prev_block_hash: String,
-    hash: String,
+    pub timestamp: u128,
+    pub transactions: Vec<Transaction>,
+    pub prev_block_hash: String,
+    pub hash: String,
     nonce: i32,
     height: i32,
 }

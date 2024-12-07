@@ -1,6 +1,7 @@
 use std::process::exit;
 use bitcoincash_addr::Address;
 use clap::{arg, Command};
+use crate::block::Block;
 use crate::blockchain::Blockchain;
 use crate::errors::Result;
 use crate::server::Server;
@@ -17,7 +18,7 @@ impl Cli {
     pub fn run(&mut self) -> Result<()> {
         let matches = Command::new("blockchain-rust-demo")
             .version("0.1")
-            .author("behrouz.r.fa@gmail.com")
+            .author("manish&nishchay")
             .about("blockchain in rust: a simple blockchain for learning")
             .subcommand(Command::new("printchain").about("print all the chain blocks"))
             .subcommand(Command::new("createwallet").about("create a wallet"))
@@ -150,7 +151,7 @@ impl Cli {
     }
 }
 
-fn cmd_send(from: &str, to: &str, amount: i32, mine_now: bool) -> Result<()> {
+pub fn cmd_send(from: &str, to: &str, amount: i32, mine_now: bool) -> Result<()> {
     let bc = Blockchain::new()?;
     let mut utxo_set = UTXOSet { blockchain: bc };
     let wallets = Wallets::new()?;
@@ -165,7 +166,7 @@ fn cmd_send(from: &str, to: &str, amount: i32, mine_now: bool) -> Result<()> {
         Server::send_transaction(&tx, utxo_set)?;
     }
 
-    println!("success!");
+    // println!("success!");
     Ok(())
 }
 
@@ -176,20 +177,20 @@ pub fn cmd_create_wallet() -> Result<String> {
     Ok(address)
 }
 
-fn cmd_reindex() -> Result<i32> {
+pub fn cmd_reindex() -> Result<i32> {
     let bc = Blockchain::new()?;
     let utxo_set = UTXOSet { blockchain: bc };
     utxo_set.reindex()?;
     utxo_set.count_transactions()
 }
 
-fn cmd_create_blockchain(address: &str) -> Result<()> {
+pub fn cmd_create_blockchain(address: &str) -> Result<()> {
     let address = String::from(address);
     let bc = Blockchain::create_blockchain(address)?;
 
     let utxo_set = UTXOSet { blockchain: bc };
     utxo_set.reindex()?;
-    println!("create blockchain");
+    //println!("create blockchain");
     Ok(())
 }
 
@@ -206,19 +207,19 @@ pub fn cmd_get_balance(address: &str) -> Result<i32> {
     Ok(balance)
 }
 
-fn cmd_print_chain() -> Result<()> {
+pub fn cmd_print_chain() -> Result<Blockchain> {
     let bc = Blockchain::new()?;
-    for b in bc.iter() {
-        println!("{:#?}", b);
-    }
-    Ok(())
+    // for b in bc.iter() {
+    //     println!("{:#?}", b);
+    // }
+    Ok(bc)
 }
 
 pub fn cmd_list_address() -> Result<Vec<String>> {
     let ws = Wallets::new()?;
     let addresses = ws.get_all_addresses();
     // println!("addresses: ");
-    // for ad in addresses {
+    // for ad in &addresses {
     //     println!("{}", ad);
     // }
     Ok(addresses)

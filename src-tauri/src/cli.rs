@@ -224,3 +224,22 @@ pub fn cmd_list_address() -> Result<Vec<String>> {
     // }
     Ok(addresses)
 }
+
+pub fn cmd_start_miner(port: &str, address: &str) -> Result<()> {
+    println!("Initializing blockchain for mining...");
+    let bc = Blockchain::new()?;
+    println!("Setting up UTXO set...");
+    let utxo_set = UTXOSet { blockchain: bc };
+    println!("Creating mining server on port {}...", port);
+    let server = Server::new(port, address, utxo_set)?;
+    println!("Starting mining server...");
+    // Spawn the mining server in a separate thread
+    std::thread::spawn(move || {
+        match server.start_server() {
+            Ok(_) => println!("Mining server stopped"),
+            Err(e) => eprintln!("Mining server error: {}", e)
+        }
+    });
+    println!("Mining server started successfully!");
+    Ok(())
+}

@@ -7,6 +7,8 @@
   import TransactionSender from '../components/TransactionSender.svelte';
   import UTXOInfo from '../components/UTXOInfo.svelte';
   import BlockchainViewer from '../components/BlockchainViewer.svelte';
+  import MineButton from '../components/MineButton.svelte';
+
   
   let addresses: string[] = [];
 </script>
@@ -22,6 +24,7 @@
     <TransactionSender {addresses} />
     <UTXOInfo />
     <BlockchainViewer />
+    <MineButton />
   </div>
 </main>
 

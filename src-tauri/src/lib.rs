@@ -16,7 +16,6 @@ mod server;
 
 #[tauri::command]   
 fn cmd_get_address_wrapper() -> Vec<String>{
-    println!("lol");
     let address = crate::cli::cmd_list_address().unwrap();
     address
 }
@@ -49,6 +48,14 @@ fn cmd_send_tauri(from: &str, to: &str, amount: i32, mineNow: bool) {
     match crate::cli::cmd_send(from, to, amount, mineNow) {
         Ok(_) => info!("Transaction sent successfully"),
         Err(e) => error!("Failed to send transaction: {}", e)
+    }
+}
+
+#[tauri::command]
+fn cmd_start_miner_tauri(port: &str, address: &str) {
+    match crate::cli::cmd_start_miner(port, address) {
+        Ok(_) => println!("Miner started successfully"),
+        Err(e) => eprintln!("Error: {}",e)
     }
 }
 
@@ -103,8 +110,9 @@ pub fn run() {
             cmd_get_balance_tauri,
             cmd_reindex_tauri,
             cmd_create_blockchain_tauri,
-            cmd_send_tauri
-            //cmd_print_chain_tauri
+            cmd_send_tauri,
+            cmd_start_miner_tauri,
+            cmd_print_chain_tauri
             ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -50,12 +50,13 @@
   }
   </script>
 
-  
+
 <div class="transaction-container">
-  <h3>Send Transaction</h3>
-  <div class="transaction-form">
-    <div class="form-group">
-      <label for="from">From Address:</label>
+<h2>Transaction Portal <span class="subtitle">Digital Transfer</span></h2>
+<div class="transaction-form">
+  <div class="form-group">
+    <label for="from">From Address:</label>
+    <div class="select-wrapper">
       <select 
         id="from"
         class="address-select" 
@@ -68,9 +69,11 @@
         {/each}
       </select>
     </div>
+  </div>
 
-    <div class="form-group">
-      <label for="to">To Address:</label>
+  <div class="form-group">
+    <label for="to">To Address:</label>
+    <div class="select-wrapper">
       <select 
         id="to"
         class="address-select" 
@@ -83,146 +86,218 @@
         {/each}
       </select>
     </div>
-
-    <div class="form-group">
-      <label for="amount">Amount:</label>
-      <input 
-        id="amount"
-        type="number" 
-        bind:value={amount}
-        min="1"
-        disabled={sending}
-        class="amount-input"
-        placeholder="Enter amount"
-      />
-    </div>
-
-    <div class="form-group checkbox">
-      <label>
-        <input 
-          type="checkbox" 
-          bind:checked={mineNow} 
-          disabled={sending}
-        />
-        Mine Immediately
-      </label>
-    </div>
-
-    <button 
-      class="send-btn"
-      on:click={sendTransaction} 
-      disabled={sending}
-    >
-      {sending ? 'Sending...' : 'Send Transaction'}
-    </button>
   </div>
 
-  {#if message}
-    <div class="message {message.includes('successfully') ? 'success' : 'error'}">
-      {message}
-    </div>
-  {/if}
+  <div class="form-group">
+    <label for="amount">Amount:</label>
+    <input 
+      id="amount"
+      type="number" 
+      bind:value={amount}
+      min="1"
+      disabled={sending}
+      class="amount-input"
+      placeholder="Enter amount"
+    />
+  </div>
+
+  <div class="form-group checkbox">
+    <label class="cyber-checkbox">
+      <input 
+        type="checkbox" 
+        bind:checked={mineNow} 
+        disabled={sending}
+      />
+      <span class="checkbox-text">Mine Immediately</span>
+    </label>
+  </div>
+
+  <button 
+    class="cyber-button"
+    on:click={sendTransaction} 
+    disabled={sending}
+  >
+    {#if sending}
+      <span class="loader"></span>
+    {:else}
+      <span class="button-content">
+        <span class="button-text">Send Transaction</span>
+        <span class="button-icon">💸</span>
+      </span>
+    {/if}
+  </button>
+</div>
+
+{#if message}
+  <div class="message {message.includes('successfully') ? 'success' : 'error'}">
+    {message}
+  </div>
+{/if}
 </div>
 
 <style>
+.transaction-container {
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+h2 {
+  color: #00ff88;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-align: center;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.subtitle {
+  font-size: 0.8em;
+  color: #ff61d8;
+  opacity: 0.7;
+}
+
+.transaction-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+label {
+  color: #00ff88;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper::after {
+  content: '▼';
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #00ff88;
+  pointer-events: none;
+}
+
+.address-select, .amount-input {
+  width: 100%;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 8px;
+  color: #00ff88;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.address-select:focus, .amount-input:focus {
+  outline: none;
+  border-color: #00ff88;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+}
+
+.address-select option {
+  background: #1a1a1a;
+  color: #00ff88;
+}
+
+.cyber-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.checkbox-text {
+  color: #ff61d8;
+}
+
+.cyber-button {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(45deg, #00ff88, #00cc6f);
+  border: none;
+  border-radius: 8px;
+  color: #1a1a1a;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.cyber-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+}
+
+.cyber-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  font-family: 'Fira Code', monospace;
+  animation: fadeIn 0.3s ease;
+}
+
+.success {
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  color: #00ff88;
+}
+
+.error {
+  background: rgba(255, 61, 216, 0.1);
+  border: 1px solid rgba(255, 61, 216, 0.3);
+  color: #ff61d8;
+}
+
+.loader {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #1a1a1a;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: inline-block;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
   .transaction-container {
-    background: white;
-    border-radius: 8px;
+    margin: 1rem;
     padding: 1.5rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   }
-
-  .transaction-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin: 1rem 0;
-  }
-
-  h3 {
-    color: #2c3e50;
-    margin: 0 0 1rem 0;
-    font-size: 1.3rem;
-  }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .form-group label {
-    color: #4a5568;
-    font-size: 0.9rem;
-  }
-
-  .address-select, .amount-input {
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    background-color: #fff;
-    transition: border-color 0.2s;
-  }
-
-  .address-select:focus, .amount-input:focus {
-    outline: none;
-    border-color: #e74c3c;
-  }
-
-  .checkbox {
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .send-btn {
-    background-color: #e74c3c;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: background-color 0.2s;
-    margin-top: 1rem;
-  }
-
-  .send-btn:hover:not([disabled]) {
-    background-color: #c0392b;
-  }
-
-  .send-btn[disabled] {
-    background-color: #95a5a6;
-    cursor: not-allowed;
-  }
-
-  .message {
-    margin-top: 1rem;
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
-    font-size: 0.9rem;
-  }
-
-  .success {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
-  }
-
-  .error {
-    background-color: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
-  }
-
-  @media (max-width: 768px) {
-    .transaction-form {
-      gap: 1.5rem;
-    }
-    
-    .send-btn {
-      width: 100%;
-    }
-  }
+}
 </style>

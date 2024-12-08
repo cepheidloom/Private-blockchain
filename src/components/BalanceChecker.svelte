@@ -1,5 +1,6 @@
 <script lang="ts">
   import { invoke } from "@tauri-apps/api/core";
+  import { fade } from "svelte/transition";
   
   export let addresses: string[] = [];
   let selectedAddress: string = '';
